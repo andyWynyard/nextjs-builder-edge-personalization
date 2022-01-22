@@ -7,6 +7,9 @@ import DefaultErrorPage from 'next/error'
 import Head from 'next/head'
 import { Link } from '@components/Link/Link'
 import { getTargetingValues } from '@builder.io/personalization-utils'
+import { Button } from 'react-bootstrap'
+import '@components/Heading'
+import '@components/Button'
 
 export async function getStaticProps({
   params,
@@ -28,9 +31,12 @@ export async function getStaticProps({
       })
       .toPromise()) || null
 
+  const theme = (await builder.get('theme').toPromise()) || {}
+
   return {
     props: {
       page,
+      theme,
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
@@ -56,7 +62,6 @@ export default function Path({
   page,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
-
   if (router.isFallback) {
     return <h1>Loading...</h1>
   }
@@ -95,6 +100,7 @@ export default function Path({
           ],
         }}
       />
+      <Button>Test</Button>
       <BuilderComponent renderLink={Link} model="page" content={page} />
     </>
   )
